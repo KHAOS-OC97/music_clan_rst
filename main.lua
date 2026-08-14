@@ -9,7 +9,12 @@
 ]]
 
 -- ==================== CARREGAMENTO DE MÓDULOS ====================
-local script_root = script.Parent
+local script_root = script and script.Parent or (_G.__HOC_BOOTSTRAP and _G.__HOC_BOOTSTRAP.root)
+
+if not script_root then
+    error("❌ Contexto de script inválido. Use init.lua ou um loader que defina a hierarquia do módulo.")
+end
+
 local Config = require(script_root:WaitForChild("config"))
 local State = require(script_root:WaitForChild("state"))
 local Services = require(script_root:WaitForChild("services"))
