@@ -60,7 +60,20 @@ end
 
 -- Função para executar código Lua com o ambiente "script" correto
 local function executeModule(code, parent)
-    local func, err = loadstring(code)
+    local wrappedCode = [[
+        local __HOC_REQUIRE = function(target)
+            if type(target) == "table" then
+                return target
+            end
+            if target == nil then
+                return nil
+            end
+            return require(target)
+        end
+        local require = __HOC_REQUIRE
+    ]] .. code
+
+    local func, err = loadstring(wrappedCode)
     if not func then
         error("❌ Erro ao compilar o módulo: " .. err)
     end
