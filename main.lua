@@ -9,10 +9,23 @@
 ]]
 
 -- ==================== CARREGAMENTO DE MÓDULOS ====================
+local function bootstrapFromHttp()
+    local baseUrl = "https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main"
+    local ok, code = pcall(function()
+        return game:HttpGet(baseUrl .. "/init.lua")
+    end)
+
+    if not ok or not code then
+        error("❌ Contexto de script inválido e não foi possível carregar o bootstrap do GitHub.")
+    end
+
+    return loadstring(code)()
+end
+
 local script_root = script and script.Parent or (_G.__HOC_BOOTSTRAP and _G.__HOC_BOOTSTRAP.root)
 
 if not script_root then
-    error("❌ Contexto de script inválido. Use init.lua ou um loader que defina a hierarquia do módulo.")
+    return bootstrapFromHttp()
 end
 
 local Config = require(script_root:WaitForChild("config"))
