@@ -18,8 +18,7 @@ function Components:CreateToggle(parent, labelText, yOffset, stateKey, onToggle)
     container.Position = UDim2.new(0.05, 0, 0, yOffset)
     container.BackgroundTransparency = 1
     container.ZIndex = 2
-    
-    -- Label do toggle
+
     local label = Instance.new("TextLabel", container)
     label.Size = UDim2.new(0.66, 0, 1, 0)
     label.BackgroundTransparency = 1
@@ -29,8 +28,7 @@ function Components:CreateToggle(parent, labelText, yOffset, stateKey, onToggle)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.TextSize = 11
     label.ZIndex = 2
-    
-    -- Botão de switch
+
     local switch = Instance.new("TextButton", container)
     switch.Size = UDim2.new(0, 36, 0, 18)
     switch.Position = UDim2.new(0.78, 0, 0.2, 0)
@@ -38,42 +36,57 @@ function Components:CreateToggle(parent, labelText, yOffset, stateKey, onToggle)
     switch.Text = ""
     switch.ZIndex = 2
     Instance.new("UICorner", switch).CornerRadius = UDim.new(1, 0)
-    
-    -- Knob (bolinhas do switch)
+
     local knob = Instance.new("Frame", switch)
     knob.Size = UDim2.new(0, 12, 0, 12)
     knob.Position = UDim2.new(0, 2, 0.5, -6)
     knob.BackgroundColor3 = Config.Colors.White
     knob.ZIndex = 3
     Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
-    
-    -- Conectar clique
+
+    local initialState = State:Get(stateKey) == true
+    label.TextColor3 = initialState and Config.Colors.White or Config.Colors.LightGray
+    switch.BackgroundColor3 = initialState and Config.Colors.Green or Config.Colors.Red
+    knob.Position = initialState and UDim2.new(1, -14, 0.5, -6) or UDim2.new(0, 2, 0.5, -6)
+
     switch.MouseButton1Click:Connect(function()
-        local newState = State:Toggle(stateKey)
-        
-        -- Animar knob
-        Services.TweenService:Create(
-            knob,
-            TweenInfo.new(Config.Animation.TweenDuration),
-            {Position = newState and UDim2.new(1, -14, 0.5, -6) or UDim2.new(0, 2, 0.5, -6)}
-        ):Play()
-        
-        -- Animar cor do switch
-        Services.TweenService:Create(
-            switch,
-            TweenInfo.new(Config.Animation.TweenDuration),
-            {BackgroundColor3 = newState and Config.Colors.Green or Config.Colors.Red}
-        ):Play()
-        
-        -- Atualizar cor do label
+        local ok, newState = pcall(function()
+            return State:Toggle(stateKey)
+        end)
+
+        if not ok then
+            newState = false
+        end
+
+        if newState == nil then
+            newState = false
+        end
+
+        pcall(function()
+            Services.TweenService:Create(
+                knob,
+                TweenInfo.new(Config.Animation.TweenDuration),
+                {Position = newState and UDim2.new(1, -14, 0.5, -6) or UDim2.new(0, 2, 0.5, -6)}
+            ):Play()
+        end)
+
+        pcall(function()
+            Services.TweenService:Create(
+                switch,
+                TweenInfo.new(Config.Animation.TweenDuration),
+                {BackgroundColor3 = newState and Config.Colors.Green or Config.Colors.Red}
+            ):Play()
+        end)
+
         label.TextColor3 = newState and Config.Colors.White or Config.Colors.LightGray
-        
-        -- Callback personalizado
+
         if onToggle then
-            onToggle(newState)
+            pcall(function()
+                onToggle(newState)
+            end)
         end
     end)
-    
+
     return {container = container, label = label, switch = switch, knob = knob}
 end
 

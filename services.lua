@@ -19,8 +19,13 @@ Services.Camera = workspace.CurrentCamera
 
 -- Jogador local
 Services.LocalPlayer = Services.Players.LocalPlayer
-Services.Character = Services.LocalPlayer.Character
+Services.PlayerGui = Services.LocalPlayer and Services.LocalPlayer:FindFirstChild("PlayerGui")
+Services.Character = Services.LocalPlayer and Services.LocalPlayer.Character
 Services.HumanoidRootPart = Services.Character and Services.Character:FindFirstChild("HumanoidRootPart")
+
+if not Services.CoreGui and Services.PlayerGui then
+    Services.CoreGui = Services.PlayerGui
+end
 
 -- Funções auxiliares para atualizar referências
 function Services:UpdateCharacter()

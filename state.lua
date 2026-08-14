@@ -8,16 +8,25 @@
 local Config = require(script.Parent:WaitForChild("config"))
 local State = {}
 
--- ==================== INICIALIZAÇÃO DO ESTADO ====================
-function State:Init()
-    -- Garante que getgenv() está inicializado
+local function EnsureState()
+    if type(getgenv) ~= "function" then
+        return nil
+    end
+
     if not getgenv().HNkUI then
         getgenv().HNkUI = {}
     end
-    
-    local state = getgenv().HNkUI
-    
-    -- Define valores padrão para cada feature
+
+    return getgenv().HNkUI
+end
+
+-- ==================== INICIALIZAÇÃO DO ESTADO ====================
+function State:Init()
+    local state = EnsureState()
+    if not state then
+        return nil
+    end
+
     state.AntiAFK = state.AntiAFK or Config.Features.AntiAFK.Enabled
     state.ESP = state.ESP or Config.Features.ESP.Enabled
     state.God = state.God or Config.Features.God.Enabled
@@ -26,33 +35,61 @@ function State:Init()
     state.WalkSpeed = state.WalkSpeed or Config.Movement.DefaultWalkSpeed
     state.FOV = state.FOV or Config.Camera.DefaultFOV
     state.SpamCadencia = state.SpamCadencia or Config.Features.Spam.DefaultCadencia
-    
+
     return state
 end
 
 -- ==================== GETTERS ====================
 function State:Get(key)
-    return getgenv().HNkUI[key]
+    local state = EnsureState()
+    if not state then
+        return nil
+    end
+
+    if state[key] == nil then
+        if key == "AntiAFK" then return Config.Features.AntiAFK.Enabled end
+        if key == "ESP" then return Config.Features.ESP.Enabled end
+        if key == "God" then return Config.Features.God.Enabled end
+        if key == "Jump" then return Config.Features.Jump.Enabled end
+        if key == "Spam" then return Config.Features.Spam.Enabled end
+        if key == "WalkSpeed" then return Config.Movement.DefaultWalkSpeed end
+        if key == "FOV" then return Config.Camera.DefaultFOV end
+        if key == "SpamCadencia" then return Config.Features.Spam.DefaultCadencia end
+    end
+
+    return state[key]
 end
 
 function State:GetAll()
-    return getgenv().HNkUI
+    return EnsureState()
 end
 
 -- ==================== SETTERS ====================
 function State:Set(key, value)
-    getgenv().HNkUI[key] = value
+    local state = EnsureState()
+    if not state then
+        return nil
+    end
+
+    state[key] = value
+    return value
 end
 
 function State:Toggle(key)
-    local currentValue = getgenv().HNkUI[key]
-    getgenv().HNkUI[key] = not currentValue
-    return getgenv().HNkUI[key]
+    local state = EnsureState()
+    if not state then
+        return false
+    end
+
+    local currentValue = state[key]
+    local newValue = not currentValue
+    state[key] = newValue
+    return newValue
 end
 
 -- ==================== VALIDAÇÃO ====================
 function State:IsValid()
-    return getgenv().HNkUI ~= nil
+    return EnsureState() ~= nil
 end
 
 return State

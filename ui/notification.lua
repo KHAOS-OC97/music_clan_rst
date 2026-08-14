@@ -10,35 +10,48 @@ local Services = require(script.Parent.Parent:WaitForChild("services"))
 
 local Notification = {}
 
+local function GetGuiParent()
+    if Services.CoreGui and Services.CoreGui.Parent then
+        return Services.CoreGui
+    end
+
+    if Services.LocalPlayer and Services.LocalPlayer:FindFirstChild("PlayerGui") then
+        return Services.LocalPlayer.PlayerGui
+    end
+
+    return nil
+end
+
 -- Função principal para exibir notificações
 function Notification:Show(message, success)
     success = success or false
-    
-    -- Limpa notificação anterior
-    local existing = Services.CoreGui:FindFirstChild(Config.UI.NotificationGui.Name)
+
+    local parent = GetGuiParent()
+    if not parent then
+        return
+    end
+
+    local existing = parent:FindFirstChild(Config.UI.NotificationGui.Name)
     if existing then
         pcall(function() existing:Destroy() end)
     end
-    
-    -- Cria nova ScreenGui
-    local gui = Instance.new("ScreenGui", Services.CoreGui)
+
+    local gui = Instance.new("ScreenGui", parent)
     gui.Name = Config.UI.NotificationGui.Name
     gui.ResetOnSpawn = false
-    
-    -- Frame principal
+
     local frame = Instance.new("Frame", gui)
     frame.Size = Config.UI.NotificationGui.Size
     frame.Position = Config.UI.NotificationGui.Position
     frame.BackgroundColor3 = Config.Colors.Black
     frame.BackgroundTransparency = 0.3
     frame.ZIndex = 100
-    
+
     Instance.new("UICorner", frame).CornerRadius = Config.UI.NotificationGui.CornerRadius
-    
-    -- Borda com cor dinâmica
+
     local stroke = Instance.new("UIStroke", frame)
     stroke.Thickness = 2
-    
+
     task.spawn(function()
         while frame and frame.Parent do
             pcall(function()
@@ -47,8 +60,7 @@ function Notification:Show(message, success)
             task.wait(0.02)
         end
     end)
-    
-    -- TextLabel da mensagem
+
     local textLabel = Instance.new("TextLabel", frame)
     textLabel.Size = UDim2.new(1, 0, 1, 0)
     textLabel.BackgroundTransparency = 1
@@ -57,8 +69,7 @@ function Notification:Show(message, success)
     textLabel.Font = Enum.Font.GothamBold
     textLabel.TextSize = 12
     textLabel.ZIndex = 101
-    
-    -- Auto-destruir após duração
+
     task.delay(Config.UI.NotificationGui.Duration, function()
         pcall(function() gui:Destroy() end)
     end)
