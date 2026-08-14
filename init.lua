@@ -7,6 +7,18 @@
 
 local baseUrl = "https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main"
 
+local originalRequire = require
+local function safeRequire(target)
+    if type(target) == "table" then
+        if target ~= nil then
+            return target
+        end
+    end
+    return originalRequire(target)
+end
+
+require = safeRequire
+
 local function makeFakeFolder(name, parent)
     local folder = {
         Name = name,
@@ -71,6 +83,12 @@ local function executeModule(code, parent)
     _G.script = previousScript
     script = previousScript
 
+    if type(result) == "table" then
+        if result.Parent == nil and parent then
+            result.Parent = parent
+        end
+    end
+
     if not success then
         error("❌ Erro ao executar módulo: " .. tostring(result))
     end
@@ -86,6 +104,8 @@ print("════════════════════════�
 print("  📥 Carregando módulos...")
 
 local root = makeFakeRoot()
+root.ui.Parent = root
+root.features.Parent = root
 
 local Config = executeModule(loadModule("config.lua"), root)
 root.config = Config
