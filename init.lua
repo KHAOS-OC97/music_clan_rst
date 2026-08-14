@@ -53,8 +53,14 @@ local function executeModule(code, parent)
         error("❌ Erro ao compilar o módulo: " .. err)
     end
 
-    local previousScript = _G.script
-    _G.script = { Parent = parent, Name = parent and parent.Name or "script" }
+    local previousScript = rawget(_G, "script")
+    local fakeScript = {
+        Name = parent and parent.Name or "script",
+        Parent = parent,
+    }
+
+    _G.script = fakeScript
+    script = fakeScript
 
     local success, result = xpcall(function()
         return func()
@@ -63,6 +69,7 @@ local function executeModule(code, parent)
     end)
 
     _G.script = previousScript
+    script = previousScript
 
     if not success then
         error("❌ Erro ao executar módulo: " .. tostring(result))
