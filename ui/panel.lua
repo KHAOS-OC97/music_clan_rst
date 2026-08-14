@@ -143,25 +143,25 @@ function Panel:AddSpamControl(onCadenciaChange)
     
     -- Label
     local label = Instance.new("TextLabel", container)
-    label.Size = UDim2.new(0.6, 0, 1, 0)
+    label.Size = UDim2.new(0.52, 0, 1, 0)
     label.BackgroundTransparency = 1
-    label.Text = "Cadência (s):"
+    label.Text = "CADÊNCIA"
     label.TextColor3 = Config.Colors.LightGray
-    label.Font = Enum.Font.Gotham
+    label.Font = Enum.Font.GothamBold
     label.TextXAlignment = Enum.TextXAlignment.Left
-    label.TextSize = 11
+    label.TextSize = 10
     label.ZIndex = 2
     
     -- Input TextBox
     local inputBox = Instance.new("TextBox", container)
-    inputBox.Size = UDim2.new(0.35, 0, 1, 0)
-    inputBox.Position = UDim2.new(0.63, 0, 0, 0)
+    inputBox.Size = UDim2.new(0.38, 0, 1, 0)
+    inputBox.Position = UDim2.new(0.58, 0, 0, 0)
     inputBox.BackgroundColor3 = Config.Colors.DarkGray
     inputBox.TextColor3 = Config.Colors.Green
     inputBox.BorderColor3 = Config.Colors.Green
     inputBox.Text = tostring(Config.Features.Spam.DefaultCadencia)
     inputBox.Font = Enum.Font.Gotham
-    inputBox.TextSize = 11
+    inputBox.TextSize = 10
     inputBox.ZIndex = 2
     
     Instance.new("UICorner", inputBox).CornerRadius = UDim.new(0, 4)

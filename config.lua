@@ -74,7 +74,7 @@ Config.Features = {
     },
     Spam = {
         Enabled = false,
-        Label = "🔥 TRANSMISSÃO RST 🔥",
+        Label = "SPAM",
         Key = "Spam",
         DefaultCadencia = 5,
         MinCadencia = 3,
