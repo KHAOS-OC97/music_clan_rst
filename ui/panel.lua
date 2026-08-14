@@ -85,18 +85,16 @@ end
 -- ==================== ADICIONAR TOGGLES ====================
 function Panel:AddToggles()
     if not self.MainFrame then return end
-    
+
     local togglesConfig = {
-        {key = "AntiAFK", label = Config.Features.AntiAFK.Label},
-        {key = "ESP", label = Config.Features.ESP.Label},
-        {key = "God", label = Config.Features.God.Label},
-        {key = "Jump", label = Config.Features.Jump.Label},
-        {key = "Spam", label = Config.Features.Spam.Label},
+        {key = "AntiAFK", label = Config.Features.AntiAFK.Label, y = 40},
+        {key = "ESP", label = Config.Features.ESP.Label, y = 80},
+        {key = "God", label = Config.Features.God.Label, y = 120},
+        {key = "Jump", label = Config.Features.Jump.Label, y = 160},
+        {key = "Spam", label = Config.Features.Spam.Label, y = 200},
     }
-    
-    for i, toggleCfg in ipairs(togglesConfig) do
-        local yOffset = 0.15 + (i - 1) * 0.11
-        
+
+    for _, toggleCfg in ipairs(togglesConfig) do
         local callback = function(state)
             if toggleCfg.key == "AntiAFK" then
                 local msg = state and "🛡️ ANTI-AFK: ATIVO" or "⚠️ ANTI-AFK: INATIVO"
@@ -106,8 +104,8 @@ function Panel:AddToggles()
                 Notification:Show(msg, state)
             end
         end
-        
-        Components:CreateToggle(self.MainFrame, toggleCfg.label, yOffset, toggleCfg.key, callback)
+
+        Components:CreateToggle(self.MainFrame, toggleCfg.label, toggleCfg.y, toggleCfg.key, callback)
     end
 end
 
@@ -118,15 +116,15 @@ function Panel:AddButtons(onFOVClick, onTeleportClick)
     local fovButton = Components:CreateRGBButton(
         self.MainFrame,
         "DRONE VIEW (FOV): 70",
-        0.65,
+        275,
         onFOVClick
     )
     self.FOVButton = fovButton
-    
+
     local tpButton = Components:CreateRGBButton(
         self.MainFrame,
         "🚀 EXTRAÇÃO ELITE (TP)",
-        0.80,
+        315,
         onTeleportClick
     )
     self.TeleportButton = tpButton
@@ -139,7 +137,7 @@ function Panel:AddSpamControl(onCadenciaChange)
     -- Container
     local container = Instance.new("Frame", self.MainFrame)
     container.Size = UDim2.new(0.9, 0, 0, 28)
-    container.Position = UDim2.new(0.05, 0, 0.58, 0)
+    container.Position = UDim2.new(0.05, 0, 0, 245)
     container.BackgroundTransparency = 1
     container.ZIndex = 2
     

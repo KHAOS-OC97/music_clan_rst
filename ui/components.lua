@@ -15,7 +15,7 @@ local Components = {}
 function Components:CreateToggle(parent, labelText, yOffset, stateKey, onToggle)
     local container = Instance.new("Frame", parent)
     container.Size = UDim2.new(0.9, 0, 0, 28)
-    container.Position = UDim2.new(0.05, 0, yOffset, 0)
+    container.Position = UDim2.new(0.05, 0, 0, yOffset)
     container.BackgroundTransparency = 1
     container.ZIndex = 2
     
@@ -81,7 +81,7 @@ end
 function Components:CreateRGBButton(parent, text, yPos, onClicked)
     local button = Instance.new("TextButton", parent)
     button.Size = UDim2.new(0.9, 0, 0, 32)
-    button.Position = UDim2.new(0.05, 0, yPos, 0)
+    button.Position = UDim2.new(0.05, 0, 0, yPos)
     button.BackgroundColor3 = Config.Colors.DarkGray
     button.BackgroundTransparency = 0.2
     button.Text = text
