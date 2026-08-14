@@ -89,30 +89,68 @@ local root = makeFakeRoot()
 
 local Config = executeModule(loadModule("config.lua"), root)
 root.config = Config
-root.services = executeModule(loadModule("services.lua"), root)
-root.state = executeModule(loadModule("state.lua"), root)
+root["config"] = Config
+root.config.Parent = root
+
+local Services = executeModule(loadModule("services.lua"), root)
+root.services = Services
+root["services"] = Services
+root.services.Parent = root
+
+local State = executeModule(loadModule("state.lua"), root)
+root.state = State
+root["state"] = State
+root.state.Parent = root
 
 local Notification = executeModule(loadModule("ui/notification.lua"), root.ui)
 root.ui.notification = Notification
+root.ui["notification"] = Notification
+root.ui.notification.Parent = root.ui
+
 local Components = executeModule(loadModule("ui/components.lua"), root.ui)
 root.ui.components = Components
+root.ui["components"] = Components
+root.ui.components.Parent = root.ui
+
 local Panel = executeModule(loadModule("ui/panel.lua"), root.ui)
 root.ui.panel = Panel
+root.ui["panel"] = Panel
+root.ui.panel.Parent = root.ui
 
 local AntiAFK = executeModule(loadModule("features/antiafk.lua"), root.features)
 root.features.antiafk = AntiAFK
+root.features["antiafk"] = AntiAFK
+root.features.antiafk.Parent = root.features
+
 local ESP = executeModule(loadModule("features/esp.lua"), root.features)
 root.features.esp = ESP
+root.features["esp"] = ESP
+root.features.esp.Parent = root.features
+
 local Jump = executeModule(loadModule("features/jump.lua"), root.features)
 root.features.jump = Jump
+root.features["jump"] = Jump
+root.features.jump.Parent = root.features
+
 local Movement = executeModule(loadModule("features/movement.lua"), root.features)
 root.features.movement = Movement
+root.features["movement"] = Movement
+root.features.movement.Parent = root.features
+
 local Camera = executeModule(loadModule("features/camera.lua"), root.features)
 root.features.camera = Camera
+root.features["camera"] = Camera
+root.features.camera.Parent = root.features
+
 local Teleport = executeModule(loadModule("features/teleport.lua"), root.features)
 root.features.teleport = Teleport
+root.features["teleport"] = Teleport
+root.features.teleport.Parent = root.features
+
 local Spam = executeModule(loadModule("features/spam.lua"), root.features)
 root.features.spam = Spam
+root.features["spam"] = Spam
+root.features.spam.Parent = root.features
 
 root.ui.Parent = root
 root.features.Parent = root
