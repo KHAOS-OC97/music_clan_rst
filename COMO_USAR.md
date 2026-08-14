@@ -1,48 +1,18 @@
 # 🚀 COMO USAR O EXECUTÁVEL
 
-## ✅ Quick Start (30 segundos)
+## ✅ Quick Start (10 segundos)
 
-### Opção 1: Carregar do GitHub (MAIS FÁCIL)
+### Opção Única: Uma Linha (MAIS FÁCIL)
 
 1. **Abra seu Script Executor** (Synapse X, Script-Ware, etc)
 2. **Copie e cole este código:**
 
 ```lua
-LoaderHTTP = function(baseUrl)
-    baseUrl = baseUrl or "https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main"
-    local function loadModule(path)
-        local url = baseUrl .. "/" .. path
-        local success, result = pcall(function() return game:HttpGet(url) end)
-        if not success then error("❌ Erro: " .. result) end
-        return result
-    end
-    
-    loadstring(loadModule("main.lua"))()
-end
-
-LoaderHTTP()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main/init.lua"))()
 ```
 
 3. **Pressione Execute/Inject**
 4. **Pronto! 🎉**
-
----
-
-## 📁 Opção 2: Usar Arquivos Locais
-
-### Passo 1: Copiar Arquivos
-
-1. Copie a pasta `music_clan_rst` completa
-2. Cole em `ReplicatedStorage` no Roblox Studio
-3. Renomeie para `KChaosStep` (opcional)
-
-### Passo 2: Usar Loader Local
-
-```lua
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local root = ReplicatedStorage:WaitForChild("KChaosStep")
-require(root:WaitForChild("main"))
-```
 
 ---
 
@@ -88,18 +58,12 @@ Se preferir usar o arquivo **LOADER.lua** completo do repositório:
 ## ⚠️ Troubleshooting
 
 ### "Erro: HttpGet disabled"
-**Solução:** Seu executor não permite HttpGet. Use a opção local ou troque de executor.
+**Solução:** Seu executor não permite HttpGet. Troque para um que permite (Synapse X, Script-Ware, etc).
 
-### "Erro: Módulo não encontrado"
-**Solução:** Verifique a estrutura de pastas. Deve ter:
-```
-music_clan_rst/
-├── main.lua
-├── config.lua
-├── services.lua
-├── state.lua
-├── ui/
-└── features/
+### "Erro: attempt to index nil with 'Parent'"
+**Solução:** Este erro foi corrigido! Use a nova URL com `init.lua`:
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main/init.lua"))()
 ```
 
 ### "Painel não aparece"

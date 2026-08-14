@@ -14,7 +14,7 @@
 -- 🚀 EXECUTÁVEL EM UMA LINHA (Copie e cole isto)
 -- ═══════════════════════════════════════════════════════════════
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main/main.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main/init.lua"))()
 
 -- ═══════════════════════════════════════════════════════════════
 -- ✅ É ISSO! O script carregará automaticamente

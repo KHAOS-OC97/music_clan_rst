@@ -66,51 +66,19 @@ end
 local function LoaderHTTP(baseUrl)
     baseUrl = baseUrl or "https://raw.githubusercontent.com/KHAOS-OC97/music_clan_rst/main"
     
-    print("📡 Carregando módulos do GitHub...")
+    print("📡 Carregando init.lua do GitHub...")
     
-    local modules = {}
+    local url = baseUrl .. "/init.lua"
+    local success, result = pcall(function()
+        return game:HttpGet(url)
+    end)
     
-    -- Função auxiliar para carregar arquivos
-    local function loadModule(path)
-        local url = baseUrl .. "/" .. path
-        print("  📥 Carregando: " .. path)
-        
-        local success, result = pcall(function()
-            return game:HttpGet(url)
-        end)
-        
-        if not success then
-            error("❌ Erro ao carregar " .. path .. ": " .. result)
-        end
-        
-        return result
+    if not success then
+        error("❌ Erro ao carregar init.lua: " .. result)
     end
     
-    -- Carregar módulos na ordem correta
-    local configCode = loadModule("config.lua")
-    local servicesCode = loadModule("services.lua")
-    local stateCode = loadModule("state.lua")
-    
-    local uiPanelCode = loadModule("ui/panel.lua")
-    local uiComponentsCode = loadModule("ui/components.lua")
-    local uiNotificationCode = loadModule("ui/notification.lua")
-    
-    local featuresAntiAFKCode = loadModule("features/antiafk.lua")
-    local featuresESPCode = loadModule("features/esp.lua")
-    local featuresJumpCode = loadModule("features/jump.lua")
-    local featuresMovementCode = loadModule("features/movement.lua")
-    local featuresCameraCode = loadModule("features/camera.lua")
-    local featuresTeleportCode = loadModule("features/teleport.lua")
-    local featuresSpamCode = loadModule("features/spam.lua")
-    
-    local mainCode = loadModule("main.lua")
-    
-    print("✅ Todos os módulos carregados!")
-    print("🚀 Executando script...")
-    
-    -- Executar o main
-    local mainFunc = loadstring(mainCode)
-    mainFunc()
+    print("✅ Arquivo carregado! Executando...")
+    loadstring(result)()
 end
 
 --[[
